@@ -14,7 +14,8 @@ class App extends Component {
       people: null,
       planets: null,
       pageCount: null,
-      page: null
+      page: 1,
+      term: null
     };
   }
 
@@ -28,8 +29,8 @@ class App extends Component {
       console.log(this.state.planets);
       
       return (
-        <div class="content">
-          <SearchBar />
+        <div className="content">
+          <SearchBar changeCallback={this.searchCallback} />
           
           {this.state.people.map(person => (
             <Card key={person.name} person={person} name={person.name}  planets={this.state.planets} planet={this.state.planets[person.homeworld - 1].name} birthday={person.birth_year}  />
@@ -51,7 +52,13 @@ class App extends Component {
       ); 
     }
   }
-  
+
+  searchCallback = (term) => {
+    console.log(term);
+    this.setState({ term: term });
+    this.fetchPeople();
+  }
+
   handlePageClick = data => {
     this.setState({ page: data.selected }, () => {
       this.fetchPeople();
@@ -61,7 +68,8 @@ class App extends Component {
 
   fetchPeople() {
     var self = this;
-    fetch('http://localhost:3008/people?_limit=10&_page=' + self.state.page)
+    let search = self.state.term ? '&q=' + self.state.term : "";
+    fetch('http://localhost:3008/people?_limit=10&_page=' + self.state.page + search)
     .then(function(response) {
         self.setState({ 
           pageCount: Math.ceil( response.headers.get('x-total-count') / 10) 
