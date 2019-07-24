@@ -10,7 +10,8 @@
   "dependencies": {
     "react": "16.4.2",
     "react-dom": "16.4.2",
-    "react-paginate": "5.2.4"
+    "react-inline-editing": "^1.0.10",
+    "react-paginate": "^5.2.4"
   },
   "scripts": {
     "start": "./node_modules/.bin/concurrently \"cd ./node_modules/swapi-json-server && node app.js\" \"react-scripts start\"",
